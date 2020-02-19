@@ -37,7 +37,7 @@ module.exports=(app,jwt)=>{
                         res.send("login")
                     }
                     else{
-                        res.send("check your email or password")
+                        res.send("check your password")
                     }   
                 })
                 .catch((err)=>{

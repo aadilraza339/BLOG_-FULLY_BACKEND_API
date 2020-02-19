@@ -9,19 +9,15 @@ let update_approve = (user_id, approve)=>{
 }
 
 
-
-
 let approve_blog = (approve_by,approve_Y_n,post_id)=>{
-    console.log(approve_Y_n);
-    
     return knex("create_Blog").update({"create_Blog.approve_by":approve_by,"create_Blog.approve_Y/n":approve_Y_n}).where("create_Blog.post_id",post_id)
 }
 
+let approve_register = (email)=>{
+    return knex.select("*").from('register').havingIn('register.email',email)
+}
 
-
-
-
-module.exports = {approve, update_approve , approve_blog }
+module.exports = {approve, update_approve , approve_blog,approve_register }
 
 
 

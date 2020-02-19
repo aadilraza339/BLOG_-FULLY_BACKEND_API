@@ -1,6 +1,6 @@
 const knex = require ('../Model/post_knex')
 module.exports = (create, jwt)=>{
-    create.post('/create',(req,res)=>{
+    create.get('/create_blog',(req,res)=>{
         var token=req.headers.cookie.split(" ")
         token=(token[token.length-1]).slice(0,-10)
         jwt.verify(token, 'secret', (err,user_detail)=>{

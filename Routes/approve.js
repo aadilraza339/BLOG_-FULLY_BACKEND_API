@@ -33,9 +33,8 @@ module.exports = (approve , jwt) =>{
         token=(token[token.length-1]).slice(0,-10)
         jwt.verify(token, 'secret', (err,user_detail)=>{
             if(!err){
-                if(user_detail['token'][0]['approve']==1){
-                    res.send(user_detail)
-
+                // res.json(user_detail['token'][0].apporve)
+                if(user_detail['token'][0]['apporve']=="1"){
                     var user_email = user_detail['token'][0]['email']
                     var user_name = user_detail['token'][0]["user_Name"]
                     var post_id = req.body.post_id
@@ -43,7 +42,22 @@ module.exports = (approve , jwt) =>{
                     Knex.approve(user_email)
                     .then((data)=>{
                         if(data.length==0){
-                            res.send("you don't have permission to access")
+                            Knex.approve_register(user_email)
+                            .then((detail_length)=>{
+                                if(detail_length[0]['apporve']==1){
+                                    Knex.approve_blog(user_name, approve, post_id)
+                                    .then((now_approve)=>{
+                                        res.send("done")
+                                    })
+                                }
+                                else{
+                                    res.send("you are not admin")
+                                }
+                            })
+                            .catch((err)=>{
+                                res.send(err)
+                            })
+                            
                         }
                         else if (data !=0){
                             Knex.approve_blog(user_name, approve, post_id)
@@ -61,10 +75,10 @@ module.exports = (approve , jwt) =>{
                 }
             }
             else{
-                res.send({"errdff":user_detail})
+                res.send({"err< message":user_detail})
             }
         })  
     })
-}
+}  
 
 
